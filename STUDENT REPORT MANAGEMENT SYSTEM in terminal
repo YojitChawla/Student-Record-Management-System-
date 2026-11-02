@@ -12,6 +12,7 @@
  // 9. Switch case is used to select menu options.
  // 10. Variables store student ID, name, course and marks.
 
+
 #include <stdio.h>
 #include <string.h>
 
@@ -22,137 +23,218 @@ float marks[100];
 
 int count = 0;
 
+// Add Student
 void add()
 {
-    if (count == 100){
+    if (count == 100) {
         printf("Record Full!\n");
         return;
-    
+    }
+
     printf("Enter ID: ");
     scanf("%d", &id[count]);
+
     printf("Enter Name: ");
-    scanf("%s", name[count]);
+    fflush(stdout);
+    if (scanf("%49s", name[count]) != 1)
+        return;
+
     printf("Enter Course: ");
-    scanf("%s", course[count]);
+    fflush(stdout);
+    if (scanf("%49s", course[count]) != 1)
+        return;
+
     printf("Enter Marks: ");
     scanf("%f", &marks[count]);
+
     count++;
+
     printf("Student Added!\n");
 }
-void display(){
+
+// Display Students
+void display()
+{
     int i;
-    if (count == 0){
+
+    if (count == 0) {
         printf("No Records!\n");
         return;
     }
-    for (i = 0; i < count; i++){
+
+    for (i = 0; i < count; i++) {
         printf("\nID: %d\n", id[i]);
         printf("Name: %s\n", name[i]);
         printf("Course: %s\n", course[i]);
         printf("Marks: %.2f\n", marks[i]);
     }
 }
-int search(int sid, int i){
+
+// Recursive Search
+int search(int sid, int i)
+{
     if (i == count)
         return -1;
+
     if (id[i] == sid)
         return i;
+
     return search(sid, i + 1);
 }
-void find(){
+
+// Find Student
+void find()
+{
     int sid, i;
+
     printf("Enter ID: ");
     scanf("%d", &sid);
+
     i = search(sid, 0);
-    if (i == -1)
+
+    if (i == -1) {
         printf("Not Found!\n");
-    else{
+    }
+    else {
         printf("Name: %s\n", name[i]);
         printf("Course: %s\n", course[i]);
         printf("Marks: %.2f\n", marks[i]);
     }
 }
-void update(){
+
+// Update Student
+void update()
+{
     int sid, i;
+
     printf("Enter ID: ");
     scanf("%d", &sid);
+
     i = search(sid, 0);
-    if (i == -1)
+
+    if (i == -1) {
         printf("Not Found!\n");
-    else{
+    }
+    else {
         printf("Enter Name: ");
-        scanf("%s", name[i]);
+        fflush(stdout);
+        if (scanf("%49s", name[i]) != 1)
+            return;
+
         printf("Enter Course: ");
-        scanf("%s", course[i]);
+        fflush(stdout);
+        if (scanf("%49s", course[i]) != 1)
+            return;
+
         printf("Enter Marks: ");
         scanf("%f", &marks[i]);
+
         printf("Updated!\n");
     }
 }
-void del(){
+
+// Delete Student
+void del()
+{
     int sid, i, j;
+
     printf("Enter ID: ");
     scanf("%d", &sid);
+
     i = search(sid, 0);
-    if (i == -1)
+
+    if (i == -1) {
         printf("Not Found!\n");
-    else{
-        for (j = i; j < count - 1; j++){
+    }
+    else {
+        for (j = i; j < count - 1; j++) {
             id[j] = id[j + 1];
+
             strcpy(name[j], name[j + 1]);
+
             strcpy(course[j], course[j + 1]);
+
             marks[j] = marks[j + 1];
         }
+
         count--;
+
         printf("Deleted!\n");
     }
 }
-void average(){
+
+// Calculate Average
+void average()
+{
     int i;
     float total = 0;
-    if (count == 0)
-    {
+
+    if (count == 0) {
         printf("No Records!\n");
         return;
     }
-    for (i = 0; i < count; i++)
+
+    for (i = 0; i < count; i++) {
         total += marks[i];
+    }
+
     printf("Average: %.2f\n", total / count);
 }
-int main(){
+
+// Main Function
+int main()
+{
     int ch;
-    do
-    {
-     printf("\n===== Student Record =====\n");
-     printf("1. Add\n2. Display\n3. Search\n4. Update\n5. Delete\n6. Average\n0. Exit\n");  
+
+    do {
+        printf("\n===== Student Record =====\n");
+
+        printf("1. Add\n");
+        printf("2. Display\n");
+        printf("3. Search\n");
+        printf("4. Update\n");
+        printf("5. Delete\n");
+        printf("6. Average\n");
+        printf("0. Exit\n");
+
         printf("Enter Choice: ");
         scanf("%d", &ch);
-        switch (ch){
+
+        switch (ch) {
             case 1:
                 add();
                 break;
+
             case 2:
                 display();
                 break;
+
             case 3:
                 find();
                 break;
+
             case 4:
                 update();
                 break;
+
             case 5:
                 del();
                 break;
+
             case 6:
                 average();
                 break;
+
             case 0:
                 printf("Thank You!\n");
                 break;
+
             default:
                 printf("Invalid Choice!\n");
         }
+
     } while (ch != 0);
+
     return 0;
 }
 
